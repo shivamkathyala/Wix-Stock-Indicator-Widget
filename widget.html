@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+        .ubraci_rectangle {
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            height: 40px;
+            background: #7c7b7b;
+            width: 40px;
+            position: relative;
+            left: 0;
+            transition: left 1s ease-in-out; 
+        }
+        .ubraci_First_div {
+            background: #000;
+            height: 70px;
+            width: 30px;
+            border-radius: 130px 0px 0px 130px;
+            opacity: 0.9;
+        }
+        .ubraci_sec_div {
+            height: 70px;
+            width: 78px;
+            background: #d83d3b;
+            opacity: 0.8;
+        }
+        .ubraci_third_fiv {
+            height: 70px;
+            width: 85px;
+            background: #f6dd59;
+            opacity: 0.8;
+        }
+        .ubraci_four_div {
+            height: 70px;
+            width: 100px;
+            background-color: #62b15b;
+            opacity: 0.8;
+            border-radius: 0px 130px 130px 0px;
+        }
+        .ubraci_border_radius_main {
+            display: flex;
+            margin-top: -10px;
+            z-index: -1;
+            position: relative;
+        }
+        .ubraci_Top_heading_div h1 {
+            font-size: 35px;
+            color: #0c0c0d;
+            text-align: center;
+            font-weight: 500;
+            font-family: "Anton", sans-serif;
+        }
+        .ubraci_full_page_chield {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .ubraci_down_main_div {
+            width: 300px;
+            position: relative;
+        }
+        .ubraci_message {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #ff4040;
+            transition: opacity 0.5s ease-in-out;
+            font-family: "Anton", sans-serif;
+        }
+        .ubraci_message.show {
+            opacity: 1;
+        }
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            .ubraci_Top_heading_div h1 {
+                font-size: 20px;
+            }
+            .ubraci_message {
+                font-size: 14px;
+            }
+            .ubraci_down_main_div {
+                width: 280px;
+                position: relative;
+            }
+            .ubraci_rectangle {
+                height: 20px;
+                width: 20px;
+            }
+            .ubraci_First_div {
+                height: 70px;
+                width: 20px;
+            }
+            .ubraci_sec_div {
+                height: 70px;
+                width: 86px;
+            }
+            .ubraci_third_fiv {
+                height: 70px;
+                width: 89px;
+            }
+            .ubraci_four_div {
+                height: 70px;
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ubraci_full_page_parent">
+        <div class="ubraci_full_page_chield">
+            <div class="ubraci_Top_heading_div">
+                <h1>Dostępność kulek ciasta na żywo:</h1>
+            </div>
+            <div class="ubraci_down_main_div">
+                <div class="ubraci_rectangle"></div>
+                <div class="ubraci_border_radius_main">
+                    <div class="ubraci_First_div"></div>
+                    <div class="ubraci_sec_div"></div>
+                    <div class="ubraci_third_fiv"></div>
+                    <div class="ubraci_four_div"></div>
+                </div>
+            </div>
+            <div class="ubraci_message" id="message">Wprowadź wartość, aby zobaczyć komunikat.</div>
+        </div>
+    </div>
+    <script>
+        function updateRectanglePosition(value) {
+            if (value < 0) value = 0;
+            if (value > 150) value = 150;
+            let maxMovement = 300 - 40; 
+            let newPosition = (value / 150) * maxMovement;
+            var rectangle = document.querySelector('.ubraci_rectangle');
+            var message = document.getElementById('message');
+            if (rectangle) {
+                rectangle.style.left = newPosition + 'px';
+            } else {
+                console.error('Rectangle element not found');
+            }
+            if (value > 0 && value <= 50) {
+                showMessage('Pospiesz się, nasza pizza się kończy!');
+            } else if (value == 0) {
+                showMessage('Koniec ciasta! Zapraszamy ponownie jutro od 13:00');
+            } else {
+                showMessage('');
+            }
+        }
+
+        function showMessage(text) {
+            var message = document.getElementById('message');
+            message.textContent = text;
+            message.classList.add('show');
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'updatePosition') {
+                updateRectanglePosition(event.data.value);
+            }
+        });
+    </script>
+</body>
+</html>
